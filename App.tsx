@@ -7,7 +7,7 @@
  *
  * @format
  */
-
+import usersCollection from "./src/store/fierbase"
 import React, {type PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -26,7 +26,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
+console.log(usersCollection)
 const Section: React.FC<
   PropsWithChildren<{
     title: string;
