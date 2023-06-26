@@ -30,7 +30,7 @@ export default function SignIn  ({navigation}: {navigation: any}) {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text>Sign In</Text>
           <Button
-          title="Sign Out"
+          title="Sign In"
           onPress={() => {navigation.navigate('Home');
         //    isLoggedIn = true
         }}
