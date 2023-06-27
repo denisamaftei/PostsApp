@@ -25,7 +25,10 @@ import uuid from 'react-native-uuid';
 
 export default function HomeScreen({ navigation }: { navigation: any }) {
     const [isEditing, onEdit] = useState(false);
+    const [isCreating, onCreate] = useState(false);
     const [text, onChangeText] = useState('Useless Text');
+    const [title, onChangeTitle] = useState('Useless Text');
+    const [body, onChangeBody] = useState('Useless Text');
     const [isLoggedIn, onLogging] = useState(true)
 
     const dispatch: ThunkDispatch<typeof RootState, {}, any> = useDispatch();
@@ -33,8 +36,8 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
         // throw new Error("error")
         const newPost: Post = {
           // Create a new post object
-          body: "This is a new post.",
-          title: 'New Post',
+          body: body,
+          title: title,
           uid: ""
         };
         // console.log(limit(uuid.v1().toString().replace(/-/g, ''),20))
@@ -91,6 +94,30 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
         iconButton = <FontAwesomeIcon icon={faPenToSquare} size={20} style={{ ...styles.icon, ...styles.editIcon }} />
         postDescription= <Text>{text}</Text>
     }
+    let fielsdOrButton;
+    if(isCreating) {
+        fielsdOrButton = [<TextInput
+            style={styles.titleInput}
+            onChangeText={onChangeTitle}
+            value={title}
+        />, <TextInput
+            style={styles.bodyInput}
+            onChangeText={onChangeBody}
+            value={body}
+        />,
+        <Pressable onTouchStart={() => handleAddPost()} onPressIn={() => onCreate(!isCreating)}  ><FontAwesomeIcon icon={faCheck} size={30} style={{ ...styles.icon, ...styles.editIcon, ...styles.createIcon }} /></Pressable>]
+    }
+    else {
+        fielsdOrButton = <Pressable style={({ pressed }) => [
+            {
+                backgroundColor: pressed ? '#7593C5' : '#7593eb',
+            },
+            styles.button,
+        ]}
+            onPressIn={() => onCreate(!isCreating)}>
+            <Text style={styles.text}>Create New Post</Text>
+        </Pressable>
+    }
     return (
         <SafeAreaView style={backgroundStyle}>
             <StatusBar
@@ -118,20 +145,12 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
                     </Section>
                     <Separator />
                 </View>
-                <Pressable style={({ pressed }) => [
-                    {
-                        backgroundColor: pressed ? '#7593C5' : '#7593eb',
-                    },
-                    styles.button,
-                ]}
-                    onPressIn={() => handleAddPost()}
-                >
-                    <Text style={styles.text}>Create New Post</Text>
-
-                </Pressable>
+               <View>{fielsdOrButton}</View>
                 <Button
                     title="Sign Out"
-                    onPress={() => { handleAddPost()}}
+                    onPress={() => {navigation.navigate('SignIn'); 
+                    // isLoggedIn = false
+                }}
                 />
             </ScrollView>
         </SafeAreaView>
@@ -210,9 +229,18 @@ const styles = StyleSheet.create({
     editIcon: {
         marginBottom: 10
     },
+    titleInput: {
+        flex:1
+    },
+    bodyInput: {
+        flex:1
+    },
     input: {
-        // height: 40,
-        // margin: 12,
-        // padding: 10,
+        
+    },
+    createIcon: {
+        flex: 2,
+        alignSelf: "center"
     }
+
 });
