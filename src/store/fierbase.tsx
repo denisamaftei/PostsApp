@@ -23,5 +23,5 @@ firebase.initializeApp(firebaseConfig);
 // const projectAuth = firebase.auth();
 const db = firebase.firestore();
 // collection references
-const usersCollection = db.collection("users");
-export default { db, usersCollection };
+export const postsCollection = db.collection("posts");
+export default { db };

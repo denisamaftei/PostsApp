@@ -1,6 +1,6 @@
 // Define the types for the post data
 export interface Post {
-    id: number;
+    uid: string;
     title: string;
     body: string;
   }
@@ -14,7 +14,13 @@ export interface Post {
   export const ADD_POST = 'ADD_POST';
   export const REMOVE_POST = 'REMOVE_POST';
   export const EDIT_POST = 'EDIT_POST';
-  
+  export const GET_POSTS = 'GET_POSTS';
+
+  interface GetPostsAction {
+    type: typeof GET_POSTS;
+    payload: Post[];
+  }
+
   interface AddPostAction {
     type: typeof ADD_POST;
     payload: Post;
@@ -22,7 +28,7 @@ export interface Post {
   
   interface RemovePostAction {
     type: typeof REMOVE_POST;
-    payload: number; // ID of the post to be removed
+    payload: string; // ID of the post to be removed
   }
   
   interface EditPostAction {
@@ -30,5 +36,5 @@ export interface Post {
     payload: Post;
   }
   
-  export type PostActionTypes = AddPostAction | RemovePostAction | EditPostAction;
+  export type PostActionTypes = GetPostsAction | AddPostAction | RemovePostAction | EditPostAction;
   

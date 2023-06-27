@@ -19,7 +19,7 @@ const postReducer = (state = initialState, action: PostActionTypes): PostsState 
     case EDIT_POST:
       return {
         ...state,
-        posts: state.posts.map((post: any) => (post.id === action.payload.id ? action.payload : post)),
+        posts: state.posts.map((post: any) => (post.id === action.payload.uid ? action.payload : post)),
       };
     default:
       return state;
