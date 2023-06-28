@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         color: "#7593eb",
+        marginLeft: 30
     },
     iconButton: {
         paddingVertical: 0
