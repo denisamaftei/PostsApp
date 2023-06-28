@@ -27,10 +27,23 @@ const postReducer: Reducer<PostsState, PostActionTypes> = (state = initialState,
           posts: state.posts.filter((post: Post) => post.uid !== action.payload),
         };
       case EDIT_POST:
-        return {
-          ...state,
-          posts: state.posts.map((post: Post) => (post.uid === action.payload.uid ? action.payload : post)),
-        };
+        {
+            const { uid, title, body } = action.payload;
+            const updatedPosts = state.posts.map((post) => {
+              if (post.uid === uid) {
+                return {
+                  ...post,
+                  title,
+                  body,
+                };
+              }
+              return post;
+            });
+            return {
+              ...state,
+              posts: updatedPosts,
+            };
+          }
       default:
         return state;
     }

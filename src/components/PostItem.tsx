@@ -8,65 +8,37 @@ import { useDispatch } from 'react-redux';
 import { editPost } from '../store/actions/posts.actions';
 import { Post } from '../store/postsTypes';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../store/state';
 
 type Props = {
   post: Post;
 };
 
 const PostItem: React.FC<Props> = ({ post }) => {
-  const dispatch = useDispatch();
+const dispatch: ThunkDispatch<RootState, {}, any> = useDispatch();
   const [isEditing, setEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(post.title);
 const [editedBody, setEditedBody] = useState(post.body);
 
 const Separator = () => <View style={styles.separator} />;
-const Section: React.FC<
-PropsWithChildren<{
-  title: string;
-}>
-> = ({ children, title }) => {
-const isDarkMode = useColorScheme() === 'dark';
-return (
-  <View style={styles.sectionContainer}>
-    <Text
-      style={[
-        styles.sectionTitle,
-        {
-          color: isDarkMode ? Colors.white : Colors.black,
-        },
-      ]}
-    >
-      {title}
-    </Text>
-    <Text
-      style={[
-        styles.sectionDescription,
-        {
-          color: isDarkMode ? Colors.light : Colors.dark,
-        },
-      ]}
-    >
-      {children}
-    </Text>
-  </View>
-);
-};
-//   const handleEditPost = () => {
-//     const editedPost: Post = {
-//       ...post,
-//       title: editedTitle,
-//       body: editedBody,
-//     };
-//     dispatch(editPost(editedPost));
-//     setEditing(false);
-//   };
+  const handleEditPost = () => {
+    const editedPost: Post = {
+      ...post,
+      title: editedTitle,
+      body: editedBody,
+    };
+    dispatch(editPost(editedPost));
+    setEditing(false);
+  };
 
   const iconButton = isEditing ? (
-    <FontAwesomeIcon
+    <Pressable onPressIn={() => handleEditPost()}><FontAwesomeIcon
       icon={faCheck}
       size={20}
       style={{ ...styles.icon, ...styles.editIcon }}
     />
+    </Pressable>
   ) : (
     <FontAwesomeIcon
       icon={faPenToSquare}
@@ -76,18 +48,29 @@ return (
   );
 
   const postDescription = isEditing ? (
-    <TextInput
-      style={styles.input}
+    <TextInput 
+      style={styles.bodyInput}
+      multiline={true}
       onChangeText={setEditedBody}
       value={editedBody}
     />
   ) : (
-    <Text>{post.body}</Text>
+    <Text style={styles.body}>{post.body}</Text>
+  );
+
+  const postTitle = isEditing ? (
+    <TextInput 
+      style={styles.titleInput}
+      onChangeText={setEditedTitle}
+      value={editedTitle}
+    />
+  ) : (
+    <Text style={styles.title}>{post.title}</Text>
   );
 
   return (
-    <View key={post.uid}>
-      <Section title={post.title}>
+    <View style={styles.postsContainer} key={post.uid}>
+        <View>{postTitle}</View>
         <View style={styles.descriptionContainer}>
           <View style={styles.description}>{postDescription}</View>
           <View style={styles.iconsContainer}>
@@ -99,28 +82,39 @@ return (
             </Pressable>
           </View>
         </View>
-      </Section>
       <Separator />
     </View>
   );
 };
 const styles = StyleSheet.create({
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-
+    title: {
+        fontSize: 24,
+        fontWeight: '700',
+        marginLeft:20,
+        marginTop:20
     },
-    sectionTitle: {
+    body: {
+        marginLeft:20
+    },
+    titleInput: {
         fontSize: 24,
         fontWeight: '600',
+        marginLeft:20,
+        marginTop:20
     },
-    sectionDescription: {
-        marginTop: 8,
-        fontSize: 18,
-        fontWeight: '400',
-        paddingRight: 20,
-        flex: 1
+    bodyInput: {
+        marginLeft:20
     },
+    postsContainer: {
+        // marginLeft:
+    },
+    // sectionDescription: {
+    //     marginTop: 8,
+    //     fontSize: 18,
+    //     fontWeight: '400',
+    //     paddingRight: 20,
+    //     flex: 1
+    // },
     separator: {
         marginVertical: 8,
         marginHorizontal: 20,
@@ -148,15 +142,6 @@ const styles = StyleSheet.create({
     },
     editIcon: {
         marginBottom: 10
-    },
-    titleInput: {
-        flex:1
-    },
-    bodyInput: {
-        flex:1
-    },
-    input: {
-        
     },
     createIcon: {
         flex: 2,

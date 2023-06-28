@@ -9,57 +9,50 @@ import {
     Pressable,
     Button,
     TextInput,
-  } from 'react-native';
-  import React, { useState, useEffect, PropsWithChildren } from 'react';
-  import { useDispatch, useSelector } from 'react-redux';
-  import { getPosts, addPost, removePost, editPost } from '../store/actions/posts.actions';
-  import { Post } from '../store/postsTypes';
-  import { Colors } from 'react-native/Libraries/NewAppScreen';
-  import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-  import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-  import { faCheck } from '@fortawesome/free-solid-svg-icons';
-  import { faRemove } from '@fortawesome/free-solid-svg-icons';
-  import { ThunkDispatch } from '@reduxjs/toolkit';
-  import { RootState } from '../store/state';
+} from 'react-native';
+import React, { useState, useEffect, PropsWithChildren } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts, addPost, removePost, editPost } from '../store/actions/posts.actions';
+import { Post } from '../store/postsTypes';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { RootState } from '../store/state';
 import PostItem from '../components/PostItem';
-  
-  export default function HomeScreen({ navigation }: { navigation: any }) {
+
+export default function HomeScreen({ navigation }: { navigation: any }) {
     const [isCreating, onCreate] = useState(false);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostBody, setNewPostBody] = useState('');
-  
+
     const dispatch: ThunkDispatch<RootState, {}, any> = useDispatch();
     const posts = useSelector((state: RootState) => state.posts.posts);
-  
+
     useEffect(() => {
-      dispatch(getPosts());
+        dispatch(getPosts());
     }, [dispatch]);
-  
+
     const handleAddPost = () => {
-      const newPost: Post = {
-        body: newPostBody,
-        title: newPostTitle,
-        uid: "",
-      };
-      dispatch(addPost(newPost));
-      setNewPostTitle('');
-      setNewPostBody('');
-    };
-  
-    const isDarkMode = useColorScheme() === 'dark';
-    const backgroundStyle = {
-      backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+        const newPost: Post = {
+            body: newPostBody,
+            title: newPostTitle,
+            uid: "",
+        };
+        dispatch(addPost(newPost));
+        setNewPostTitle('');
+        setNewPostBody('');
     };
 
+    const isDarkMode = useColorScheme() === 'dark';
+
     return (
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
-          <Text style={styles.header}>Welcome, @User!</Text>
-          <View style={{ backgroundColor: isDarkMode ? Colors.black : Colors.white, flex: 1 }}>
+        <SafeAreaView style={styles.backgroundStyle}>
+            <StatusBar
+            />
+            <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.backgroundStyle}>
+                <Text style={styles.header}>Welcome, @User!</Text>
+                <View style={{ backgroundColor: isDarkMode ? Colors.black : Colors.white, flex: 1 }}>
                 </View>
                 <View>
                     {posts.map((post) => (
@@ -100,22 +93,24 @@ import PostItem from '../components/PostItem';
                     >
                         <Text style={styles.text}>Create New Post</Text>
                     </Pressable>)}
-          <Button
-            title="Sign Out"
-            onPress={() => {
-              navigation.navigate('SignIn');
-            }}
-          />
-        </ScrollView>
-      </SafeAreaView>
+                <Button
+                    title="Sign Out"
+                    onPress={() => {
+                        navigation.navigate('SignIn');
+                    }}
+                />
+            </ScrollView>
+        </SafeAreaView>
     );
-  }
-  
-  const styles = StyleSheet.create({
+}
+
+const styles = StyleSheet.create({
     sectionContainer: {
         marginTop: 32,
         paddingHorizontal: 24,
-
+    },
+    backgroundStyle: {
+        backgroundColor: "#fff"
     },
     sectionTitle: {
         fontSize: 24,
@@ -178,13 +173,13 @@ import PostItem from '../components/PostItem';
         marginBottom: 10
     },
     titleInput: {
-        flex:1
+        flex: 1
     },
     bodyInput: {
-        flex:1
+        flex: 1
     },
     input: {
-        
+
     },
     createIcon: {
         flex: 2,
@@ -192,4 +187,3 @@ import PostItem from '../components/PostItem';
     }
 
 });
-  
