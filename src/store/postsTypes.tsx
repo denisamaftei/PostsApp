@@ -5,11 +5,6 @@ export interface Post {
     body: string;
   }
   
-  // Define the types for the store state
-  export interface PostsState {
-    posts: Post[];
-  }
-  
   // Define the types for the actions
   export const ADD_POST = 'ADD_POST';
   export const REMOVE_POST = 'REMOVE_POST';

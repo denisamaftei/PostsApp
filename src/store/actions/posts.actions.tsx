@@ -7,12 +7,16 @@ import { postsCollection } from "../fierbase"
 export const getPosts = (): ThunkAction<void, typeof RootState, {}, PostActionTypes> => {
     return async (dispatch) => {
       try {
+        // Fetch posts collection from Firestore
         const querySnapshot = await postsCollection.get();
-        const posts = querySnapshot.docs.map((doc) => {
+  
+        // Map query snapshot data to post objects
+        const posts: Post[] = querySnapshot.docs.map((doc) => {
           return { uid: doc.id, ...doc.data() } as Post;
         });
+  
+        // Dispatch the action with the retrieved posts
         dispatch({ type: GET_POSTS, payload: posts });
-        console.log(posts)
       } catch (error) {
         console.log(error);
         // Handle error
