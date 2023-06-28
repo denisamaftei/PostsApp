@@ -45,7 +45,7 @@ export const addPost = (post: Post): ThunkAction<void, typeof RootState, {}, Pos
 export const removePost = (postId: string): ThunkAction<void, typeof RootState, {}, PostActionTypes> => {
   return async (dispatch) => {
     try {
-      await firestore().collection('posts').doc(postId).delete();
+      await postsCollection.doc(postId).delete();
       dispatch({ type: REMOVE_POST, payload: postId });
     } catch (error) {
       // Handle error

@@ -34,14 +34,17 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
     }, [dispatch]);
 
     const handleAddPost = () => {
-        const newPost: Post = {
-            body: newPostBody,
-            title: newPostTitle,
-            uid: "",
-        };
-        dispatch(addPost(newPost));
-        setNewPostTitle('');
-        setNewPostBody('');
+        if (newPostBody && newPostTitle) {
+            const newPost: Post = {
+                body: newPostBody,
+                title: newPostTitle,
+                uid: "",
+            };
+            dispatch(addPost(newPost));
+            setNewPostTitle('');
+            setNewPostBody('');
+            onCreate(false);
+        }
     };
 
     const isDarkMode = useColorScheme() === 'dark';
@@ -75,7 +78,6 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
                     />
                     <Pressable
                         onTouchStart={() => handleAddPost()}
-                        onPressIn={() => onCreate(false)}
                     >
                         <FontAwesomeIcon
                             icon={faCheck}
@@ -173,13 +175,10 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     titleInput: {
-        flex: 1
+        marginLeft:20
     },
     bodyInput: {
-        flex: 1
-    },
-    input: {
-
+        marginLeft:20
     },
     createIcon: {
         flex: 2,

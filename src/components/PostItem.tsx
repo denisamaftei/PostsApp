@@ -1,14 +1,13 @@
-import React, { PropsWithChildren, useState } from 'react';
-import { View, Text, TextInput, Pressable,StyleSheet, useColorScheme } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Pressable,StyleSheet } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faRemove } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { editPost } from '../store/actions/posts.actions';
+import { editPost, removePost } from '../store/actions/posts.actions';
 import { Post } from '../store/postsTypes';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { AnyAction, ThunkDispatch } from '@reduxjs/toolkit';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 import { RootState } from '../store/state';
 
 type Props = {
@@ -22,6 +21,7 @@ const dispatch: ThunkDispatch<RootState, {}, any> = useDispatch();
 const [editedBody, setEditedBody] = useState(post.body);
 
 const Separator = () => <View style={styles.separator} />;
+
   const handleEditPost = () => {
     const editedPost: Post = {
       ...post,
@@ -30,6 +30,9 @@ const Separator = () => <View style={styles.separator} />;
     };
     dispatch(editPost(editedPost));
     setEditing(false);
+  };
+  const handleRemovePost = (uid: string) => {
+    dispatch(removePost(uid));
   };
 
   const iconButton = isEditing ? (
@@ -77,7 +80,7 @@ const Separator = () => <View style={styles.separator} />;
             <Pressable onPressIn={() => setEditing(!isEditing)} style={styles.iconButton}>
               {iconButton}
             </Pressable>
-            <Pressable style={styles.iconButton}>
+            <Pressable onPressIn={() => handleRemovePost(post.uid)} style={styles.iconButton}>
               <FontAwesomeIcon icon={faRemove} size={20} style={styles.icon} />
             </Pressable>
           </View>
