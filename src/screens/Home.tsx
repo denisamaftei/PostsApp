@@ -51,7 +51,7 @@ export default function HomeScreen({ navigation }: { navigation: any }) {
             <StatusBar
             />
             <ScrollView contentInsetAdjustmentBehavior="automatic" style={styles.backgroundStyle}>
-                <Text style={styles.header}>Welcome, Anda!</Text>
+                <Text style={styles.header}>Welcome, User!</Text>
                 <View style={styles.view}>
                     {posts.map((post) => (
                         <React.Fragment key={post.uid}>
